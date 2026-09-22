@@ -9,7 +9,10 @@ export const LINKS = {
   instagram: 'https://instagram.com/kasym_barber',
   instagramShop: 'https://instagram.com/kasym_barbershop',
   threads: 'https://www.threads.com/@kasym_barber',
-  whatsapp: 'https://wa.me/77479777080',
+  // Сайт личный, поэтому «Записаться ко мне» ведёт к самому Касыму —
+  // в Шажимбаева, +7 707 927 77 80. Номера остальных филиалов никуда
+  // не делись, у каждого своя ссылка в LOCATIONS ниже.
+  whatsapp: 'https://wa.me/77079277780',
   twogis: 'https://2gis.kz/petropavlovsk/firm/70000001041837300',
 };
 

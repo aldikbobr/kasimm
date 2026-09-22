@@ -9,15 +9,11 @@ function poKolonkam(items: Review[], n: number): Review[][] {
   return cols;
 }
 
+// Фон и рамка карточки заданы в CSS, а не инлайном: инлайновый стиль
+// сильнее класса, и правило :hover его бы не перебило.
 function Kartochka({ review }: { review: Review }) {
   return (
-    <article
-      className="mb-5 p-6 rounded-2xl relative"
-      style={{
-        backgroundColor: 'rgba(14,14,14,0.72)',
-        border: '1px solid rgba(255,255,255,0.06)',
-      }}
-    >
+    <article className="vodopad-card mb-5 p-6 rounded-2xl relative">
       <Quote
         size={38}
         aria-hidden="true"
@@ -78,8 +74,8 @@ export default function Reviews() {
         Водопад: каждая колонка едет сама, соседние — в разные стороны.
         Содержимое колонки продублировано, а анимация сдвигает ровно на
         половину высоты — на стыке кадр совпадает, и склейки не видно.
-        Наведение останавливает все три сразу: читать движущийся текст
-        неудобно, а гоняться курсором за одной колонкой — тем более.
+        Колонки независимы: курсор останавливает только ту, над которой
+        стоит, остальные продолжают идти.
       */}
       <div className="vodopad relative" aria-label="Отзывы клиентов">
         <div className="wrap grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 items-start">
@@ -120,7 +116,51 @@ export default function Reviews() {
         .vodopad-col[data-dir="vniz"] .vodopad-lenta {
           animation-name: vodopad-vniz;
         }
-        .vodopad:hover .vodopad-lenta { animation-play-state: paused; }
+
+        /* Останавливается только та колонка, над которой курсор.
+           Соседние продолжают идти — так видно, что лента живая,
+           и не создаётся впечатления, что страница подвисла. */
+        .vodopad-col:hover .vodopad-lenta { animation-play-state: paused; }
+
+        /* Светящийся контур по краям карточки.
+           Рамка нарисована отдельным слоем: золотой градиент, из которого
+           маской вырезана середина — остаётся только кромка в 1px.
+           Обычный border так не умеет, он не берёт градиент. */
+        .vodopad-card {
+          background-color: rgba(14,14,14,.72);
+          border: 1px solid rgba(255,255,255,.06);
+          transition: box-shadow .35s var(--ease), background-color .35s var(--ease),
+                      border-color .35s var(--ease);
+        }
+        .vodopad-card::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          border-radius: inherit;
+          padding: 1px;
+          background: linear-gradient(140deg,
+            rgba(212,175,55,0) 0%,
+            rgba(212,175,55,.85) 35%,
+            rgba(247,235,192,1) 50%,
+            rgba(212,175,55,.85) 65%,
+            rgba(212,175,55,0) 100%);
+          -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          -webkit-mask-composite: xor;
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask-composite: exclude;
+          opacity: 0;
+          transition: opacity .35s var(--ease);
+          pointer-events: none;
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+          .vodopad-card:hover::before { opacity: 1; }
+          .vodopad-card:hover {
+            background-color: rgba(22,17,10,.88);
+            border-color: rgba(212,175,55,.22);
+            box-shadow: 0 0 26px rgba(212,175,55,.16), 0 16px 38px rgba(0,0,0,.5);
+          }
+        }
 
         @keyframes vodopad-vverh {
           from { transform: translateY(0); }
