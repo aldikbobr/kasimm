@@ -14,8 +14,6 @@ export default function Regalia() {
       const sectionTop = rect.top;
       const sectionHeight = rect.height;
       const start = windowHeight * 0.85;
-      const end = windowHeight * 0.15;
-      const total = start - end;
       const scrolled = start - sectionTop;
       const progress = Math.max(0, Math.min(1, scrolled / (sectionHeight * 0.8)));
       setLineProgress(progress);

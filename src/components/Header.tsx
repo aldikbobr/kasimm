@@ -43,7 +43,9 @@ export default function Header() {
         }}
       >
         <div className="wrap flex items-center justify-between" style={{ height: 64 }}>
-          <a href="#hero" className="flex items-center gap-2.5" aria-label="KASYM — на главную">
+          {/* #about, а не #hero: отдельной секции героя нет, её роль
+              играет About, и он первый на странице */}
+          <a href="#about" className="flex items-center gap-2.5" aria-label="KASYM — на главную">
             <img src="/crest-sm.png" alt="" width={32} height={32} style={{ display: 'block' }} />
             <span className="font-display font-medium tracking-wider text-lg" style={{ letterSpacing: '0.12em' }}>
               {PERSON.short}

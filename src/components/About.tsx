@@ -52,17 +52,16 @@ export default function About() {
         </div>
 
         {/*
-          Текст. На телефоне порядок другой: кнопки поднимаются выше
-          абзацев, иначе «Записаться» не попадает на первый экран.
-          На md и шире возвращается обычный порядок — сначала текст,
-          потом кнопки.
+          Текст. Порядок: надглавие, заголовок, имя, кнопки, абзацы,
+          амбассадорство. Кнопки идут до абзацев намеренно — иначе на
+          телефоне «Записаться» не попадает на первый экран.
         */}
         <div className="rv-kids flex flex-col text-center md:text-left">
-          <div className="eyebrow justify-center md:justify-start order-1">{PERSON.title}</div>
+          <div className="eyebrow justify-center md:justify-start">{PERSON.title}</div>
 
           {/* h1 страницы: другого заголовка первого уровня на сайте нет */}
           <h1
-            className="font-display uppercase order-2"
+            className="font-display uppercase"
             style={{
               fontSize: 'clamp(34px, 6.2vw, 68px)',
               lineHeight: 1.02,
@@ -77,28 +76,16 @@ export default function About() {
           </h1>
 
           <p
-            className="mt-4 text-sm uppercase order-3"
+            className="mt-4 text-sm uppercase"
             style={{ color: 'var(--gold-soft)', letterSpacing: '0.18em' }}
           >
             {PERSON.name}
           </p>
 
-          <div
-            className="order-5 md:order-4 mt-6 space-y-4 text-base mx-auto md:mx-0 max-w-[56ch]"
-            style={{ color: 'rgba(255,255,255,0.82)', lineHeight: 1.65 }}
-          >
-            <p>
-              Меня зовут Касым Амангельдин. Я барбер из Петропавловска, чемпион Азии и
-              Европы, и с 2020 года у меня свой барбершоп — сейчас это три зала в городе.
-            </p>
-            <p>
-              Работа барбера для меня не про машинку. Она про форму головы, про то, как
-              человек носит себя, и про переход, который видно за метр. Этому же я учу
-              тех, кто приходит ко мне на курс.
-            </p>
-          </div>
-
-          <div className="order-4 md:order-5 mt-7 flex flex-wrap gap-3 justify-center md:justify-start">
+          {/* Кнопки стоят выше абзацев и в разметке, и на экране.
+              Раньше они переставлялись классами order-*, но тогда порядок
+              чтения для скринридера расходился с видимым. */}
+          <div className="mt-7 flex flex-wrap gap-3 justify-center md:justify-start">
             <a
               href={LINKS.whatsapp}
               target="_blank"
@@ -113,8 +100,23 @@ export default function About() {
             </a>
           </div>
 
+          <div
+            className="mt-7 space-y-4 text-base mx-auto md:mx-0 max-w-[56ch]"
+            style={{ color: 'rgba(255,255,255,0.82)', lineHeight: 1.65 }}
+          >
+            <p>
+              Меня зовут Касым Амангельдин. Я барбер из Петропавловска, чемпион Азии и
+              Европы, и с 2020 года у меня свой барбершоп — сейчас это три зала в городе.
+            </p>
+            <p>
+              Работа барбера для меня не про машинку. Она про форму головы, про то, как
+              человек носит себя, и про переход, который видно за метр. Этому же я учу
+              тех, кто приходит ко мне на курс.
+            </p>
+          </div>
+
           <p
-            className="order-6 mt-7 text-sm"
+            className="mt-7 text-sm"
             style={{ color: 'var(--gold)', letterSpacing: '0.05em' }}
           >
             Амбассадор Hector Pro Tools · RedOne Qazaqstan

@@ -1,7 +1,54 @@
 import { Star, ExternalLink, Quote } from 'lucide-react';
-import { REVIEWS, LINKS } from '@/data';
+import { REVIEWS, LINKS, type Review } from '@/data';
+
+/** Раскладываем отзывы по колонкам по очереди, чтобы длинные и короткие
+ *  перемешались и колонки вышли примерно одной высоты. */
+function poKolonkam(items: Review[], n: number): Review[][] {
+  const cols: Review[][] = Array.from({ length: n }, () => []);
+  items.forEach((r, i) => cols[i % n].push(r));
+  return cols;
+}
+
+function Kartochka({ review }: { review: Review }) {
+  return (
+    <article
+      className="mb-5 p-6 rounded-2xl relative"
+      style={{
+        backgroundColor: 'rgba(14,14,14,0.72)',
+        border: '1px solid rgba(255,255,255,0.06)',
+      }}
+    >
+      <Quote
+        size={38}
+        aria-hidden="true"
+        className="absolute right-4 top-4 pointer-events-none"
+        style={{ color: 'var(--gold)', opacity: 0.07 }}
+      />
+      <div className="flex gap-1 mb-3" aria-label="Оценка 5 из 5">
+        {Array.from({ length: 5 }).map((_, j) => (
+          <Star key={j} size={14} aria-hidden="true" fill="var(--gold)" style={{ color: 'var(--gold)' }} />
+        ))}
+      </div>
+      <p className="text-sm mb-4" style={{ color: 'rgba(255,255,255,0.82)', lineHeight: 1.65 }}>
+        {review.text}
+      </p>
+      <div className="flex items-baseline justify-between gap-3">
+        <span className="text-sm font-medium" style={{ color: 'var(--gold-soft)' }}>
+          {review.name}
+        </span>
+        <span className="text-xs shrink-0" style={{ color: 'var(--muted)' }}>
+          {review.date}
+        </span>
+      </div>
+    </article>
+  );
+}
 
 export default function Reviews() {
+  // 3 колонки на компьютере, 2 на планшете, 1 на телефоне.
+  // Считаем максимум, лишние прячем через CSS — так не нужен ресайз-слушатель.
+  const cols = poKolonkam(REVIEWS, 3);
+
   return (
     <section id="reviews" className="sec">
       <div className="wrap">
@@ -25,53 +72,88 @@ export default function Reviews() {
             <ExternalLink size={14} />
           </a>
         </div>
+      </div>
 
-        {/*
-          Водопад на CSS-колонках. Масонри-библиотека тут не нужна:
-          карточки разной высоты, колонки заполняются сами, порядок
-          чтения — сверху вниз по колонке. break-inside-avoid не даёт
-          карточке разорваться между колонками.
-        */}
-        <div className="rv-kids columns-1 md:columns-2 lg:columns-3 gap-5">
-          {REVIEWS.map((review, i) => (
-            <article
+      {/*
+        Водопад: каждая колонка едет сама, соседние — в разные стороны.
+        Содержимое колонки продублировано, а анимация сдвигает ровно на
+        половину высоты — на стыке кадр совпадает, и склейки не видно.
+        Наведение останавливает все три сразу: читать движущийся текст
+        неудобно, а гоняться курсором за одной колонкой — тем более.
+      */}
+      <div className="vodopad relative" aria-label="Отзывы клиентов">
+        <div className="wrap grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 items-start">
+          {cols.map((col, i) => (
+            <div
               key={i}
-              className="break-inside-avoid mb-5 p-6 rounded-2xl relative"
-              style={{
-                backgroundColor: 'rgba(14,14,14,0.6)',
-                border: '1px solid rgba(255,255,255,0.06)',
-              }}
+              className={`vodopad-col ${i === 1 ? 'hidden md:block' : ''} ${i === 2 ? 'hidden lg:block' : ''}`}
+              style={{ ['--dur' as string]: `${58 + i * 9}s` }}
+              data-dir={i % 2 === 1 ? 'vniz' : 'vverh'}
             >
-              <Quote
-                size={40}
-                aria-hidden="true"
-                className="absolute right-4 top-4 pointer-events-none"
-                style={{ color: 'var(--gold)', opacity: 0.07 }}
-              />
-              <div className="flex gap-1 mb-3" aria-label="Оценка 5 из 5">
-                {Array.from({ length: 5 }).map((_, j) => (
-                  <Star
-                    key={j}
-                    size={15}
-                    aria-hidden="true"
-                    fill="var(--gold)"
-                    style={{ color: 'var(--gold)' }}
-                  />
+              <div className="vodopad-lenta">
+                {col.map((r, j) => (
+                  <Kartochka key={`a${j}`} review={r} />
                 ))}
+                {/* копия для бесшовного стыка, для читалок скрыта */}
+                <div aria-hidden="true">
+                  {col.map((r, j) => (
+                    <Kartochka key={`b${j}`} review={r} />
+                  ))}
+                </div>
               </div>
-              <p
-                className="text-sm mb-4 relative"
-                style={{ color: 'rgba(255,255,255,0.82)', lineHeight: 1.65 }}
-              >
-                {review.text}
-              </p>
-              <div className="text-sm font-medium" style={{ color: 'var(--gold-soft)' }}>
-                {review.name}
-              </div>
-            </article>
+            </div>
           ))}
         </div>
+
+        {/* края растворяются, чтобы карточки не обрубались на границе */}
+        <div className="vodopad-kraj vodopad-kraj-verh" aria-hidden="true" />
+        <div className="vodopad-kraj vodopad-kraj-niz" aria-hidden="true" />
       </div>
+
+      <style>{`
+        .vodopad { height: 72vh; min-height: 520px; overflow: hidden; }
+        .vodopad-col { overflow: hidden; }
+        .vodopad-lenta {
+          animation: vodopad-vverh var(--dur, 60s) linear infinite;
+          will-change: transform;
+        }
+        .vodopad-col[data-dir="vniz"] .vodopad-lenta {
+          animation-name: vodopad-vniz;
+        }
+        .vodopad:hover .vodopad-lenta { animation-play-state: paused; }
+
+        @keyframes vodopad-vverh {
+          from { transform: translateY(0); }
+          to   { transform: translateY(-50%); }
+        }
+        @keyframes vodopad-vniz {
+          from { transform: translateY(-50%); }
+          to   { transform: translateY(0); }
+        }
+
+        .vodopad-kraj {
+          position: absolute; left: 0; right: 0; height: 90px;
+          pointer-events: none; z-index: 2;
+        }
+        .vodopad-kraj-verh {
+          top: 0;
+          background: linear-gradient(to bottom, var(--background) 0%, transparent 100%);
+        }
+        .vodopad-kraj-niz {
+          bottom: 0;
+          background: linear-gradient(to top, var(--background) 0%, transparent 100%);
+        }
+
+        /* Движущийся текст мешает читать тем, кому и так тяжело.
+           Здесь лента останавливается, а секция становится обычным
+           прокручиваемым списком. */
+        @media (prefers-reduced-motion: reduce) {
+          .vodopad { height: auto; min-height: 0; overflow: visible; }
+          .vodopad-lenta { animation: none; }
+          .vodopad-lenta > [aria-hidden="true"] { display: none; }
+          .vodopad-kraj { display: none; }
+        }
+      `}</style>
     </section>
   );
 }
