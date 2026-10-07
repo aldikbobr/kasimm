@@ -6,6 +6,7 @@ const NAV_ITEMS = [
   { label: 'Обо мне', href: '#about' },
   { label: 'Регалии', href: '#regalia' },
   { label: 'Работы', href: '#works' },
+  { label: 'Цены', href: '#uslugi' },
   { label: 'Обучение', href: '#education' },
   { label: 'Отзывы', href: '#reviews' },
   { label: 'Контакты', href: '#contact' },

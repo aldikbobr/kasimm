@@ -3,6 +3,7 @@ import Stats from '@/components/Stats';
 import About from '@/components/About';
 import Regalia from '@/components/Regalia';
 import Works from '@/components/Works';
+import Services from '@/components/Services';
 import Education from '@/components/Education';
 import Reviews from '@/components/Reviews';
 import Contact from '@/components/Contact';
@@ -19,6 +20,7 @@ export default function App() {
         <Stats />
         <Regalia />
         <Works />
+        <Services />
         <Education />
         <Reviews />
         <Contact />

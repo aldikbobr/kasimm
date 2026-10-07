@@ -86,3 +86,99 @@ export const LOCATIONS = [
 ];
 
 export const HOURS = 'Ежедневно 10:00 — 20:00';
+
+export const PRICE_TIERS = ['Мастер', 'Топ-мастер', 'Основатель'];
+
+// Прайс заказчика от 03.10.2026: колонка «Мастер» — его цены, у топ-мастера всё на 1 000 выше.
+// Колонку «Основатель» заказчик не присылал — оставлены прежние цены, «—» где цены нет.
+export const SERVICES = [
+  {
+    name: 'Стрижка',
+    img: 'https://images.pexels.com/photos/5970246/pexels-photo-5970246.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+    alt: 'Стрижка машинкой с точным переходом',
+    desc: 'Мужская стрижка под форму головы и тип волос',
+    prices: ['5 000', '6 000', '10 000'],
+  },
+  {
+    name: 'Борода',
+    img: 'https://images.pexels.com/photos/9153970/pexels-photo-9153970.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+    alt: 'Моделирование бороды опасной бритвой',
+    desc: 'Коррекция формы, окантовка, оформление контура',
+    prices: ['3 500', '4 500', '5 000'],
+  },
+  {
+    name: 'Стрижка + борода',
+    img: 'https://images.pexels.com/photos/4969874/pexels-photo-4969874.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+    alt: 'Комплекс: стрижка и оформление бороды',
+    desc: 'Полный образ за один визит — стрижка и борода вместе',
+    prices: ['8 500', '10 000', '13 000'],
+  },
+  {
+    name: 'Королевское бритьё головы',
+    img: '/services/razor.jpg',
+    alt: 'Мастер работает опасной бритвой',
+    desc: 'Бритьё головы опасной бритвой — лезвием',
+    prices: ['5 000', '6 000', '—'],
+  },
+  // Цена не по уровню мастера, а по густоте волос — поэтому price вместо prices.
+  {
+    name: 'Завивка',
+    img: '/services/perm.jpg',
+    alt: 'Кудрявая текстура после завивки',
+    desc: 'Кудри и текстура. Цена зависит от густоты волос',
+    price: '15 000 – 25 000',
+    masters: 'Индира, Алькарим, Аян, Ляйсан, Касым, Нуни',
+    where: 'Только в ДСР и на Шажимбаева',
+  },
+  {
+    name: 'Тонировка',
+    img: 'https://images.pexels.com/photos/8468142/pexels-photo-8468142.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+    alt: 'Тонирование волос под тон кожи',
+    desc: 'Закрашивание седины, выравнивание оттенка',
+    prices: ['4 000', '5 000', '5 000'],
+  },
+  {
+    name: 'Камуфляж бороды',
+    img: 'https://images.pexels.com/photos/7447145/pexels-photo-7447145.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+    alt: 'Камуфляж седины в бороде',
+    desc: 'Маскировка седых волос в бороде',
+    prices: ['3 000', '4 000', '4 000'],
+  },
+  {
+    name: 'Чистка лица',
+    img: '/services/face.jpg',
+    alt: 'Мастер наносит средство кистью на лицо клиента',
+    desc: 'Отпаривание, бритьё, скраб, маска',
+    prices: ['5 000', '6 000', '—'],
+    note: 'Вместе со стрижкой — 10 000',
+    where: 'Только в ДСР и на Шажимбаева',
+  },
+  {
+    name: 'Маска',
+    img: 'https://images.pexels.com/photos/18704463/pexels-photo-18704463.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+    alt: 'Нанесение уходовой маски для лица',
+    desc: 'Очищающая или питательная маска для кожи',
+    prices: ['1 000', '1 000', '1 000'],
+  },
+  {
+    name: 'Ваксинг',
+    img: 'https://images.pexels.com/photos/15577126/pexels-photo-15577126.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+    alt: 'Удаление нежелательных волос воском',
+    desc: 'Удаление волос горячим воском, одна зона',
+    prices: ['1 000', '1 000', '1 000'],
+  },
+  {
+    name: 'Hair Tattoo',
+    img: 'https://images.pexels.com/photos/1570807/pexels-photo-1570807.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+    alt: 'Геометрический узор на волосах',
+    desc: 'Рисунок машинкой — узоры, линии, орнамент',
+    prices: ['1 000 / 2 000', '—', '—'],
+  },
+];
+
+export const PRICES_KIDS = [
+  { service: 'Детская стрижка до 12 лет', value: '3 500' },
+  { service: 'Студенты — скидка 10%', value: '4 500' },
+  { service: 'Детская стрижка у основателя', value: '5 000' },
+];
+
